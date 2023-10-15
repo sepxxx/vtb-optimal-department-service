@@ -1,0 +1,5 @@
+load_rates_service:
+  url:
+    http://load-rate-service-container:8081
+api_key:
+  AIzaSyDz7Oy1Ak3Wi8O8aNZnvwMsAUi1CXumO_c

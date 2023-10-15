@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  common-rate-service:
+    image: registry.gitlab.com/sepxxx/vtb-hackaton/common-rate-service:latest
+    container_name: common-rate-service-container
+    ports:
+      - "8080:8080"
+    networks:
+      - mynetwork
+  load-rate-service:
+    image: registry.gitlab.com/sepxxx/vtb-hackaton/load-rate-service:latest
+    container_name: load-rate-service-container
+    ports:
+      - "8081:8081"
+    networks:
+      - mynetwork
+  data-generator-service:
+    container_name: data-generator-service-container
+    image: registry.gitlab.com/sepxxx/vtb-hackaton/data-generator-service:latest
+    ports: 
+      - "8082:8082"
+    networks:
+      - mynetwork
+
+  redis:
+    container_name: my-redis-container
+    image: redis:latest
+    ports: 
+      - "6379:6379"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
