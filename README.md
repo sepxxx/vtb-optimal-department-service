@@ -1,6 +1,4 @@
-# Social Media Application
->__Web messenger clone__
->You can subscribe, have friends, send messages, add posts and etc
+# Сервис для подбора оптимального отделения банка
 
 ## Использованные технологии
 * **Java**
@@ -27,14 +25,17 @@ docker-compose up
 После сбора образов, common-rate-service будет запущено на <http://localhost:8080>
 
 ## Разберем сервисы
-
-### 
+### Табличка с назначениями сервисов
 | Сервис              | Назначение                                                                                                                                                                                                          |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | common-rate-service | Формирование итоговой оценки оптимальности отделения банка исходя из данных о времени пути от гео юзера до точки и загруженности самого отделения                                                                   |
 | data-generator      | Объединяет 2 сервиса: эмуляция работы аппарата для выдачи талонов для очереди в банке + сервис которому этот аппарат сообщает о выдаче нового талона, и который в свою очередь изменяет данные по отделению в Redis |
 | load-rate-service   | Забирает данные из Redis, предоставленные data-generator, по запросу common-rate-service предоставляет их ему                                                                                                       |
 
+### Удобная и понятная блок-схема с архитектурой проекта
+![Архитектура](/arch.jpg)
+
+## Описание endpoints и sample valid types
 ### common-rate-service
 | Method | Url | Decription                            | Sample Valid Request Type | 
 | ------ | --- |---------------------------------------| --------------------------- |
@@ -70,8 +71,30 @@ common-rate-service request type приходит с frontend
     "service_type": "0"
 }
 ```
+```
+load-rate-service response type
+{
+    "Id(Long)": Rate(Double),
+    "Id(Long)": Rate(Double),
+    "Id(Long)": Rate(Dobule)
+}
+```
 
-
-### 
+### load-rate-service
 | Method | Url | Decription | Sample Valid Request Type | 
-| ------ | --- | ---------- | --------------------------- |
+|--------| --- | ---------- | --------------------------- |
+| GET    | http://localhost:8081/offices/load/rating/{faceType} |  | load-rate-service request type |
+
+``` load-rate-service request type
+{   //id отделений, для которых common-rate-service требует узнать нагрузку
+    "ids": [26000066, 26000077, 234232344]
+}
+```
+```
+load-rate-service response type
+{
+    "Id(Long)": Rate(Double),
+    "Id(Long)": Rate(Double),
+    "Id(Long)": Rate(Dobule)
+}
+```
